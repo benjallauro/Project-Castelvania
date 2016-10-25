@@ -12,6 +12,7 @@ class PlayState extends FlxState
 {
 	var jack:Player;
 	var testEnemy:Enemy; //Temporal. Esto se quitara cuando se use el Ogmo.
+	var theSword:Sword;
 	override public function create():Void
 	{
 		super.create();
@@ -31,5 +32,15 @@ class PlayState extends FlxState
 			}
 		if (FlxG.overlap(testEnemy, jack) && jack.getAttacking() == true)
 			testEnemy.damage();
+		if (FlxG.keys.pressed.F)
+		{
+			theSword = new Sword();
+			if(Reg.direction == false)
+				theSword.setPosition((jack.x + jack.width), jack.y)
+			else
+				theSword.setPosition(jack.x, jack.y);
+			add(theSword);
+		}
 	}
+	
 }

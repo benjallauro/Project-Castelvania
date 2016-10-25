@@ -12,6 +12,7 @@ class Player extends FlxSprite
 	var zonaParado:Float = 0;
 	var life:Int = 10;
 	var attacking: Bool = false;
+	
 
 	public function new(X:Float = 0, Y:Float = 0, ?SimpleGraphic:FlxGraphicAsset) 
 	{
@@ -51,13 +52,16 @@ class Player extends FlxSprite
 	}
 	private function startAttack()
 	{
+		
 		makeGraphic(25, 50, FlxColor.RED);
 		attacking = true;
+		
 		new FlxTimer().start(1.0, stopAttack, 1);
 	}
 	private function stopAttack(Timer:FlxTimer):Void
 	{
 		makeGraphic(25, 50, FlxColor.YELLOW);
+		//theSword.destroy();
 		attacking = false;
 	}
 	public function getAttacking():Bool
@@ -69,13 +73,20 @@ class Player extends FlxSprite
 		super.update(elapsed);
 		velocity.x = 0;
 		if (FlxG.keys.pressed.RIGHT)
+		{
 			velocity.x = 100;
+			Reg.direction = false;
+		}
 		else if (FlxG.keys.pressed.LEFT)
+		{
 			velocity.x = -100;
+			Reg.direction = true;
+		}
 		chequearCaida();
 		if (FlxG.keys.justPressed.F)
 		{
 			startAttack();
+			
 		}
 	}
 	
