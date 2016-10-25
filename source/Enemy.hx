@@ -7,7 +7,7 @@ import flixel.FlxG;
 
 class Enemy extends FlxSprite
 {
-	var life:Int = 1;
+	var life:Int = 5;
 	public function new(?X:Float=0, ?Y:Float=0, ?SimpleGraphic:FlxGraphicAsset) 
 	{
 		super(X, Y, SimpleGraphic);
@@ -29,5 +29,4 @@ class Enemy extends FlxSprite
 	{
 		super.update(elapsed);
 	}
-	
 }

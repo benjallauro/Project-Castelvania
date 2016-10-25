@@ -50,7 +50,7 @@ class Player extends FlxSprite
 	{
 		destroy();
 	}
-	private function startAttack()
+	public function startAttack()
 	{
 		
 		makeGraphic(25, 50, FlxColor.RED);
@@ -68,6 +68,14 @@ class Player extends FlxSprite
 	{
 		return attacking;
 	}
+	public function getX():Float
+	{
+		return x;
+	}
+	public function getY():Float
+	{
+		return y;
+	}
 	override public function update(elapsed:Float):Void
 	{
 		super.update(elapsed);
@@ -83,11 +91,7 @@ class Player extends FlxSprite
 			Reg.direction = true;
 		}
 		chequearCaida();
-		if (FlxG.keys.justPressed.F)
-		{
-			startAttack();
-			
-		}
+		
 	}
 	
 }

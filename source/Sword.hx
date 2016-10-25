@@ -18,9 +18,15 @@ class Sword extends FlxSprite
 	{
 		destroy();
 	}
+	public function setX(X:Float):Void
+	{
+		x = X;
+	}
 	override public function update(elapsed:Float):Void
 	{
 		super.update(elapsed);
+		x = Reg.weaponXPosition;
+		y = Reg.weaponYPosition;
 	}
 	
 }
