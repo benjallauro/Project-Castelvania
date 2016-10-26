@@ -11,8 +11,9 @@ class Enemy extends FlxSprite
 	public function new(?X:Float=0, ?Y:Float=0, ?SimpleGraphic:FlxGraphicAsset) 
 	{
 		super(X, Y, SimpleGraphic);
-		makeGraphic(25, 45, FlxColor.ORANGE);
-		x = 200; y = 300;
+		makeGraphic(15, 22, FlxColor.ORANGE);
+		x = 200; y = 150;
+		acceleration.y = 100;
 	}
 	public function damage()
 	{
@@ -27,6 +28,7 @@ class Enemy extends FlxSprite
 	}
 	override public function update(elapsed:Float):Void
 	{
+		
 		super.update(elapsed);
 	}
 }
