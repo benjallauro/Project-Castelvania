@@ -9,16 +9,22 @@ import flixel.FlxObject;
 class Player extends FlxSprite
 {
 	var life:Int = 10;
-	var attacking: Bool = false;
+	var attacking:Bool = false;
 	
 
 	public function new(X:Float = 0, Y:Float = 0, ?SimpleGraphic:FlxGraphicAsset) 
 	{
 		super(X, Y, SimpleGraphic);	
-		makeGraphic(15, 30, FlxColor.YELLOW);
+		loadGraphic(AssetPaths.FullAnimationPlayer__png, true, 80, 64);
+		setSize(15, 30);
+		centerOffsets();
+		offset.y += 15;
 		x = 100;
-		y = 150;
+		y = 100;
 		acceleration.y = 150;
+		animation.add("idle", [0, 0], 1, false);
+		animation.add("attack", [4, 5, 6], 4, false);
+		animation.play("idle");
 	}
 
 	public function damage()
@@ -34,16 +40,13 @@ class Player extends FlxSprite
 	}
 	public function startAttack()
 	{
-		
-		makeGraphic(15, 30, FlxColor.RED);
+		animation.play("attack");
 		attacking = true;
-		
-		new FlxTimer().start(1.0, stopAttack, 1);
 	}
-	private function stopAttack(Timer:FlxTimer):Void
+	public function stopAttack():Void
 	{
-		makeGraphic(15, 30, FlxColor.YELLOW);
 		attacking = false;
+		animation.play("idle");
 	}
 	public function getAttacking():Bool
 	{
@@ -65,15 +68,22 @@ class Player extends FlxSprite
 		{
 			velocity.x = Reg.walkSpeed;
 			Reg.direction = false;
+			//if (Reg.direction = true)
+			flipX = true;
 		}
 		if (FlxG.keys.pressed.LEFT)
 		{
 			velocity.x = -(Reg.walkSpeed);
 			Reg.direction = true;
+			//if (Reg.direction = false)
+			flipX = false;
 		}
 		if (FlxG.keys.justPressed.UP && isTouching(FlxObject.FLOOR))
 			velocity.y = -100;
-		//chequearCaida();
+		
+		
+			
+		
 		super.update(elapsed);
 		
 	}

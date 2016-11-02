@@ -14,6 +14,7 @@ class Enemy extends FlxSprite
 		makeGraphic(15, 22, FlxColor.ORANGE);
 		x = 200; y = 150;
 		acceleration.y = 100;
+		velocity.x = -25;
 	}
 	public function damage()
 	{

@@ -29,8 +29,6 @@ class PlayState extends FlxState
 		platform.makeGraphic(FlxG.width, 16, 0xFF00FFFF);
 		platform.immovable = true;
 		add(platform);
-		loader = new FlxOgmoLoader(AssetPaths.CastelvaniaStage__oel);
-		tilemap = loader.loadTilemap(AssetPaths.rocas__png, 16, 16, "tilesets");
 	}
 //theSword.setPosition(jack.x, jack.y);
 	override public function update(elapsed:Float):Void
@@ -47,18 +45,32 @@ class PlayState extends FlxState
 		{
 			if ((jack.getAttacking() == false) && jack.exists)
 			{
-				theSword = new Sword();
 				jack.startAttack();
-				if(Reg.direction == false)
-					theSword.setPosition((jack.x + jack.width), jack.y + 5)
-				else
-					theSword.setPosition(jack.x, jack.y + 5);
-				add(theSword);
-			}	
+			}
+		}
+		if (jack.animation.name == "attack")
+			{
+				if(jack.animation.finished)
+					jack.stopAttack();
+				else if (jack.animation.frameIndex == 6)
+				{
+					theSword = new Sword();
+					if (Reg.direction == false)
+					{
+						theSword.setPosition((jack.x + jack.width), jack.y + 5);
+						add(theSword);
+					}
+					else
+					{
+						theSword.setPosition(jack.x, jack.y + 5);
+						add(theSword);
+					}
+					
+				}
 		}
 		if (Reg.direction == false)
 		{
-			Reg.weaponXPosition = (jack.get X() + jack.width);
+			Reg.weaponXPosition = (jack.getX() + jack.width);
 			Reg.weaponYPosition = ((jack.getY()) + 5);
 		}
 		if (Reg.direction == true)
@@ -66,6 +78,7 @@ class PlayState extends FlxState
 			Reg.weaponXPosition = (jack.getX() - jack.width);
 			Reg.weaponYPosition = ((jack.getY()) + 5);
 		}
+		
 
 		FlxG.collide(platform, jack);
 		FlxG.collide(platform, testEnemy);

@@ -12,7 +12,7 @@ class Sword extends FlxSprite
 	{
 		super(X, Y, SimpleGraphic);
 		makeGraphic(20, 5, FlxColor.BLUE);
-		new FlxTimer().start(1.0, disappear, 1);
+		new FlxTimer().start(0.5, disappear, 1);
 	}
 	private function disappear(Timer:FlxTimer):Void
 	{
