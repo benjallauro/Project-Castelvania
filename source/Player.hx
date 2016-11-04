@@ -8,9 +8,10 @@ import flixel.util.FlxTimer;
 import flixel.FlxObject;
 class Player extends FlxSprite
 {
-	var life:Int = 10;
+	var life:Int = 3;
 	var attacking:Bool = false;
-	
+	var flinch:Bool = false;
+	var flinchTime:FlxTimer = new FlxTimer();
 
 	public function new(X:Float = 0, Y:Float = 0, ?SimpleGraphic:FlxGraphicAsset) 
 	{
@@ -24,6 +25,8 @@ class Player extends FlxSprite
 		acceleration.y = 150;
 		animation.add("idle", [0, 0], 1, false);
 		animation.add("attack", [4, 5, 6], 4, false);
+		animation.add("walk", [1, 2, 3], 7, true);
+		animation.add("damage", [11, 11], 1, false);
 		animation.play("idle");
 	}
 
@@ -31,12 +34,22 @@ class Player extends FlxSprite
 	{
 		life--;
 		x = x - 50;
+		
+		flinch = true;
+		attacking = false;
+		animation.play("damage");
+		flinchTime.start(0.2, canMove, 1);
 		if (life <= 0)
 			death();
 	}
-	private function death()
+	private function canMove(Timer:FlxTimer)
 	{
-		destroy();
+		flinch = false;
+	}
+	public function death()
+	{
+		//destroy();
+		Reg.alive = false;
 	}
 	public function startAttack()
 	{
@@ -64,26 +77,29 @@ class Player extends FlxSprite
 	{
 		
 		velocity.x = 0;
-		if (FlxG.keys.pressed.RIGHT)
+		if (FlxG.keys.pressed.RIGHT && (flinch == false))
 		{
 			velocity.x = Reg.walkSpeed;
 			Reg.direction = false;
-			//if (Reg.direction = true)
 			flipX = true;
+		if(attacking == false)
+			animation.play("walk");
 		}
-		if (FlxG.keys.pressed.LEFT)
+		if (FlxG.keys.pressed.LEFT && (flinch == false))
 		{
 			velocity.x = -(Reg.walkSpeed);
 			Reg.direction = true;
-			//if (Reg.direction = false)
 			flipX = false;
+			if(attacking == false)
+				animation.play("walk");
+		}
+		else if ((FlxG.keys.pressed.RIGHT == false) && (FlxG.keys.pressed.LEFT == false) && (attacking == false) && (flinch == false))
+		{
+			animation.play("idle");
 		}
 		if (FlxG.keys.justPressed.UP && isTouching(FlxObject.FLOOR))
 			velocity.y = -100;
-		
-		
 			
-		
 		super.update(elapsed);
 		
 	}

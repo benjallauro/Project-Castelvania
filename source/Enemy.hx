@@ -12,7 +12,7 @@ class Enemy extends FlxSprite
 	{
 		super(X, Y, SimpleGraphic);
 		makeGraphic(15, 22, FlxColor.ORANGE);
-		x = 200; y = 150;
+		x = 230; y = 150;
 		acceleration.y = 100;
 		velocity.x = -25;
 	}

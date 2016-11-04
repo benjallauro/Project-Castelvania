@@ -34,53 +34,63 @@ class PlayState extends FlxState
 	override public function update(elapsed:Float):Void
 	{
 		super.update(elapsed);
-		if (FlxG.overlap(jack, testEnemy))
-			{
-				jack.damage();
-				
-			}
-		if (FlxG.overlap(testEnemy, theSword) && jack.getAttacking() == true)
-			testEnemy.damage();
-		if (FlxG.keys.justPressed.F)
+		if (Reg.alive == true) //Todo lo que se relaciona con jack ocurrira mientras exista. De esta forma no se lo llama cuando es destruido. Evitando que el programa crashe.
 		{
-			if ((jack.getAttacking() == false) && jack.exists)
-			{
-				jack.startAttack();
-			}
-		}
-		if (jack.animation.name == "attack")
-			{
-				if(jack.animation.finished)
-					jack.stopAttack();
-				else if (jack.animation.frameIndex == 6)
+			if (FlxG.overlap(jack, testEnemy))
 				{
-					theSword = new Sword();
-					if (Reg.direction == false)
-					{
-						theSword.setPosition((jack.x + jack.width), jack.y + 5);
-						add(theSword);
-					}
-					else
-					{
-						theSword.setPosition(jack.x, jack.y + 5);
-						add(theSword);
-					}
-					
+					jack.damage();
+				
 				}
+			if (FlxG.overlap(testEnemy, theSword) && jack.getAttacking() == true)
+				testEnemy.damage();
+			if (FlxG.keys.justPressed.F || FlxG.keys.justPressed.SHIFT)
+			{
+				if ((jack.getAttacking() == false) && jack.exists)
+				{
+					jack.startAttack();
+				}
+			}
+			if (jack.animation.name == "attack")
+				{
+					if(jack.animation.finished)
+						jack.stopAttack();
+					else if (jack.animation.frameIndex == 6)
+					{
+						if(Reg.usingSword == false){
+							theSword = new Sword();
+							Reg.usingSword = true;
+						}
+						if (Reg.direction == false)
+						{
+							theSword.setPosition(Reg.weaponXPosition, Reg.weaponYPosition);
+							theSword.flipX = true;
+							add(theSword);
+						}
+						else
+						{
+							theSword.setPosition(Reg.weaponXPosition, Reg.weaponYPosition);
+							theSword.flipX = false;
+							add(theSword);
+						}
+						
+					}
+			}
+			if (Reg.direction == false)
+			{
+				Reg.weaponXPosition = (jack.getX() + jack.width + 4.5);
+				Reg.weaponYPosition = ((jack.getY()) + 6.5);
+			}
+			if (Reg.direction == true)
+			{
+				Reg.weaponXPosition = (jack.getX() - jack.width - 4.5);
+				Reg.weaponYPosition = ((jack.getY()) + 6.5);
+			}
+			FlxG.collide(platform, jack);
+			
 		}
-		if (Reg.direction == false)
-		{
-			Reg.weaponXPosition = (jack.getX() + jack.width);
-			Reg.weaponYPosition = ((jack.getY()) + 5);
-		}
-		if (Reg.direction == true)
-		{
-			Reg.weaponXPosition = (jack.getX() - jack.width);
-			Reg.weaponYPosition = ((jack.getY()) + 5);
-		}
+		if (Reg.alive == false)
+		jack.destroy();
 		
-
-		FlxG.collide(platform, jack);
 		FlxG.collide(platform, testEnemy);
 	}
 }
