@@ -8,12 +8,12 @@ import flixel.ui.FlxButton;
 import flixel.math.FlxMath;
 import flixel.system.FlxSound;
 import flixel.addons.editors.ogmo.FlxOgmoLoader;
-import flixel.tile.FlxTilemap;
 
 class PlayState extends FlxState
 {
 	var jack:Player;
 	var testEnemy:Enemy; //Temporal. Esto se quitara cuando se use el Ogmo.
+	var testBat:Bat;  //Temporal. Esto se quitara cuando se use el Ogmo.
 	var theSword:Sword;
 	
 	var platform:FlxSprite;
@@ -25,6 +25,9 @@ class PlayState extends FlxState
 		add(jack);
 		testEnemy = new Enemy();
 		add(testEnemy);
+		testBat = new Bat(250, 150); //Es necesario asignar X e Y. Aunque solo se enviara Y.
+		testBat.x = 250;
+		add(testBat);
 		platform = new FlxSprite(0, 200);
 		platform.makeGraphic(FlxG.width, 16, 0xFF00FFFF);
 		platform.immovable = true;
@@ -36,13 +39,15 @@ class PlayState extends FlxState
 		super.update(elapsed);
 		if (Reg.alive == true) //Todo lo que se relaciona con jack ocurrira mientras exista. De esta forma no se lo llama cuando es destruido. Evitando que el programa crashe.
 		{
-			if (FlxG.overlap(jack, testEnemy))
+			if (FlxG.overlap(jack, testEnemy) || FlxG.overlap(jack, testBat))
 				{
 					jack.damage();
 				
 				}
 			if (FlxG.overlap(testEnemy, theSword) && jack.getAttacking() == true)
 				testEnemy.damage();
+			if (FlxG.overlap(testBat, theSword)  && jack.getAttacking() == true)
+				testBat.damage();
 			if (FlxG.keys.justPressed.F || FlxG.keys.justPressed.SHIFT)
 			{
 				if ((jack.getAttacking() == false) && jack.exists)
@@ -79,11 +84,13 @@ class PlayState extends FlxState
 			{
 				Reg.weaponXPosition = (jack.getX() + jack.width + 4.5);
 				Reg.weaponYPosition = ((jack.getY()) + 6.5);
+				Reg.jackXPosition = jack.x;
 			}
 			if (Reg.direction == true)
 			{
 				Reg.weaponXPosition = (jack.getX() - jack.width - 4.5);
 				Reg.weaponYPosition = ((jack.getY()) + 6.5);
+				Reg.jackXPosition = jack.x;
 			}
 			FlxG.collide(platform, jack);
 			
