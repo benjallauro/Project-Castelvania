@@ -8,6 +8,8 @@ import flixel.ui.FlxButton;
 import flixel.math.FlxMath;
 import flixel.system.FlxSound;
 import flixel.addons.editors.ogmo.FlxOgmoLoader;
+import flixel.tile.FlxTilemap;
+import flixel.FlxObject;
 
 class PlayState extends FlxState
 {
@@ -15,12 +17,24 @@ class PlayState extends FlxState
 	var testEnemy:Enemy; //Temporal. Esto se quitara cuando se use el Ogmo.
 	var testBat:Bat;  //Temporal. Esto se quitara cuando se use el Ogmo.
 	var theSword:Sword;
-	
-	var platform:FlxSprite;
+	private var floor:FlxTilemap;
+	private var background:FlxTilemap;
+	private var loader:FlxOgmoLoader;
+	private var camara:FlxSprite;
 	
 	override public function create():Void
 	{
 		super.create();
+		
+		
+		loader = new FlxOgmoLoader(AssetPaths.fuckinglevel__oel);
+		floor = loader.loadTilemap(AssetPaths.Tiles__png, 16, 16, "tilesets");
+		floor.immovable = true;
+		background = loader.loadTilemap(AssetPaths.background__png, 16, 16, "background");
+		
+		add(background);
+		add(floor);
+		
 		jack = new Player();
 		add(jack);
 		testEnemy = new Enemy();
@@ -28,10 +42,11 @@ class PlayState extends FlxState
 		testBat = new Bat(250, 150); //Es necesario asignar X e Y. Aunque solo se enviara Y.
 		testBat.x = 250;
 		add(testBat);
-		platform = new FlxSprite(0, 200);
-		platform.makeGraphic(FlxG.width, 16, 0xFF00FFFF);
-		platform.immovable = true;
-		add(platform);
+		
+		camara = new FlxSprite(FlxG.width / 2, FlxG.height / 2);
+		FlxG.camera.setScrollBounds(0, background.width, 0, background.height);
+
+		FlxG.worldBounds.set(0, 0, background.width, background.height);
 	}
 //theSword.setPosition(jack.x, jack.y);
 	override public function update(elapsed:Float):Void
@@ -92,12 +107,13 @@ class PlayState extends FlxState
 				Reg.weaponYPosition = ((jack.getY()) + 6.5);
 				Reg.jackXPosition = jack.x;
 			}
-			FlxG.collide(platform, jack);
-			
+			FlxG.collide(floor, jack);
+
 		}
 		if (Reg.alive == false)
 		jack.destroy();
 		
-		FlxG.collide(platform, testEnemy);
+		FlxG.collide(floor, testEnemy);
+		camara.x = Reg.jackXPosition;
 	}
 }
