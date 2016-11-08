@@ -16,7 +16,7 @@
     <Width>6400</Width>
     <Height>240</Height>
   </LevelMaximumSize>
-  <Filename>C:\Users\826\Desktop\Project-Castelvania\assets\data\LEVEL.oep</Filename>
+  <Filename>C:\Users\Benjamin\Desktop\Facultad\Desarrollo de videojuegos 1\Project-Castelvania\assets\data\LEVEL.oep</Filename>
   <AngleMode>Radians</AngleMode>
   <CameraEnabled>true</CameraEnabled>
   <CameraSize>
@@ -51,7 +51,7 @@
       <ExportMode>CSV</ExportMode>
     </LayerDefinition>
     <LayerDefinition xsi:type="EntityLayerDefinition">
-      <Name>player</Name>
+      <Name>entities</Name>
       <Grid>
         <Width>16</Width>
         <Height>16</Height>
@@ -98,7 +98,7 @@
       <ValueDefinitions />
       <NodesDefinition Enabled="false" Limit="-1" DrawMode="None" Ghost="false" />
     </EntityDefinition>
-    <EntityDefinition Name="Bat" Limit="-1" ResizableX="false" ResizableY="false" Rotatable="false" RotateIncrement="15">
+    <EntityDefinition Name="Bat" Limit="500" ResizableX="false" ResizableY="false" Rotatable="false" RotateIncrement="15">
       <Size>
         <Width>16</Width>
         <Height>16</Height>
@@ -113,7 +113,7 @@
       <ValueDefinitions />
       <NodesDefinition Enabled="false" Limit="-1" DrawMode="None" Ghost="false" />
     </EntityDefinition>
-    <EntityDefinition Name="Enemy" Limit="-1" ResizableX="false" ResizableY="false" Rotatable="false" RotateIncrement="15">
+    <EntityDefinition Name="Enemy" Limit="500" ResizableX="false" ResizableY="false" Rotatable="false" RotateIncrement="15">
       <Size>
         <Width>16</Width>
         <Height>16</Height>

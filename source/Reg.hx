@@ -1,4 +1,19 @@
 package;
+import flixel.FlxG;
+import flixel.FlxCamera.FlxCameraFollowStyle;
+import flixel.addons.editors.tiled.TiledObjectLayer;
+import flixel.FlxObject;
+import flixel.math.FlxRandom;
+import flixel.util.FlxColor;
+import flixel.FlxSprite;
+import flixel.FlxState;
+import flixel.text.FlxText;
+import flixel.ui.FlxButton;
+import flixel.group.FlxGroup;
+import flixel.math.FlxMath;
+import flixel.addons.editors.ogmo.FlxOgmoLoader;//para cargar el nivel de ogmo
+import flixel.tile.FlxTilemap;//para usarlo
+import flixel.FlxObject;
 
 class Reg
 {
@@ -10,5 +25,7 @@ class Reg
 	static public var alive:Bool = true; //Esto me sirve para poder preguntar si Jack existe por mas que se haya destruido.
 	static public var jackXPosition:Float = 0;
 	static public var jackYPosition:Float = 0;
+	static public var villians:FlxTypedGroup<Enemy>;
+    static public var bats:FlxTypedGroup<Bat>;
 	
 }

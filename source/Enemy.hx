@@ -6,18 +6,19 @@ import flixel.util.FlxColor;
 import flixel.FlxG;
 import flixel.util.FlxTimer;
 import flixel.FlxObject;
+import Reg;
 
 class Enemy extends FlxSprite
 {
-	var life:Int = 5;
+	var life:Int = 1;
 	var direction:Bool = true;
 	public function new(?X:Float=0, ?Y:Float=0, ?SimpleGraphic:FlxGraphicAsset) 
 	{
 	super(X, Y, SimpleGraphic);
 		loadGraphic(AssetPaths.Nigro__png, true, 19, 23);
-		x = 230; y = 100;
+		//x = 230; y = 100;
 		acceleration.y = 100;
-		velocity.x = -25;
+		velocity.x = 0;
 		animation.add("walk", [0, 1, 2], 4, true);
 		animation.play("walk");
 	}
@@ -30,7 +31,7 @@ class Enemy extends FlxSprite
 	}
 	private function death()
 	{
-		destroy();
+		kill();
 	}
 	private function movement()
 	{

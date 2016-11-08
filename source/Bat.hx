@@ -18,7 +18,7 @@ class Bat extends FlxSprite
 	{
 		super(X, Y, SimpleGraphic);
 		makeGraphic(10, 10, FlxColor.PURPLE);
-		velocity.x = -15;
+		velocity.x = 0;
 		velocity.y = 50;
 		toptop = y - 15;
 		bottom = y + 15;

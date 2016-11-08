@@ -99,7 +99,7 @@ class Player extends FlxSprite
 		}
 		if (FlxG.keys.justPressed.UP && isTouching(FlxObject.FLOOR))
 			velocity.y = -100;
-			
+		
 		super.update(elapsed);
 		
 	}
