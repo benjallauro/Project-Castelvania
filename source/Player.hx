@@ -6,12 +6,15 @@ import flixel.util.FlxColor;
 import flixel.FlxG;
 import flixel.util.FlxTimer;
 import flixel.FlxObject;
+import flixel.system.FlxSound;
 class Player extends FlxSprite
 {
 	var life:Int = 3;
 	var attacking:Bool = false;
 	var flinch:Bool = false;
 	var flinchTime:FlxTimer = new FlxTimer();
+	private var jumpSound:FlxSound;
+	private var hurtSound:FlxSound;
 
 	public function new(X:Float = 0, Y:Float = 0, ?SimpleGraphic:FlxGraphicAsset) 
 	{
@@ -28,6 +31,12 @@ class Player extends FlxSprite
 		animation.add("walk", [1, 2, 3], 7, true);
 		animation.add("damage", [11, 11], 1, false);
 		animation.play("idle");
+		jumpSound = new FlxSound();
+		jumpSound.loadEmbedded(AssetPaths.jumpSound__wav);
+		jumpSound.volume = 0.5;
+		hurtSound = new FlxSound();
+		hurtSound.loadEmbedded(AssetPaths.Hurt__wav);
+		hurtSound.volume = 1;
 	}
 
 	public function damage()
@@ -39,6 +48,7 @@ class Player extends FlxSprite
 		attacking = false;
 		animation.play("damage");
 		flinchTime.start(0.2, canMove, 1);
+		hurtSound.play();
 		if (life <= 0)
 			death();
 	}
@@ -98,7 +108,10 @@ class Player extends FlxSprite
 			animation.play("idle");
 		}
 		if (FlxG.keys.justPressed.UP && isTouching(FlxObject.FLOOR))
+		{
 			velocity.y = -100;
+			jumpSound.play();
+		}
 		
 		super.update(elapsed);
 		

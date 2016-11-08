@@ -1,6 +1,7 @@
 package;
 import flixel.FlxSprite;
 import flixel.system.FlxAssets.FlxGraphicAsset;
+import flixel.system.FlxSound;
 import flixel.util.FlxColor;
 import flixel.FlxG;
 import flixel.util.FlxTimer;
@@ -13,6 +14,7 @@ class Bat extends FlxSprite
 	var toptop:Float;
 	var bottom:Float;
 	var life:Int = 1;
+	var crowKilledSound:FlxSound;
 	
 	public function new(?X:Float=0, Y:Float, ?SimpleGraphic:FlxGraphicAsset) 
 	{
@@ -24,10 +26,14 @@ class Bat extends FlxSprite
 		velocity.y = 50;
 		toptop = y - 15;
 		bottom = y + 15;
+		crowKilledSound = new FlxSound();
+		crowKilledSound.loadEmbedded(AssetPaths.CrowKilled__wav);
+		crowKilledSound.volume = 1;
 	}
 	public function damage()
 	{
 		life--;
+		crowKilledSound.play();
 		if (life <= 0)
 			death();
 	}

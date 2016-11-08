@@ -23,6 +23,10 @@ class PlayState extends FlxState
 	private var background:FlxTilemap;
 	private var loader:FlxOgmoLoader;
 	private var camara:FlxSprite;
+	private var enemyKilled:FlxSound;
+	private var backgroundMusic:FlxSound;
+
+	
 	
 	
 	override public function create():Void
@@ -55,6 +59,16 @@ class PlayState extends FlxState
 		FlxG.worldBounds.set(0, 0, background.width, background.height);
 		
 		loader.loadEntities(entityCreator, "entities");
+		
+		enemyKilled = new FlxSound();
+		enemyKilled.loadEmbedded(AssetPaths.EnemyKilled__wav);
+		enemyKilled.volume = 1;
+		
+		backgroundMusic = new FlxSound();
+		backgroundMusic.loadEmbedded(AssetPaths.ProjectCastlevaniaTheme__wav);
+		backgroundMusic.volume = 0.1;
+		backgroundMusic.play();
+
 	}
 	
 	private function entityCreator(entityName:String, entityData:Xml):Void
@@ -84,7 +98,10 @@ class PlayState extends FlxState
 						jack.damage();
 					}
 				if (FlxG.overlap(Reg.villians.members[i], theSword) && jack.getAttacking() == true)
-					 Reg.villians.members[i].damage();
+				{
+					Reg.villians.members[i].damage();
+					enemyKilled.play();
+				}
 			}
 			for (i in 0...Reg.bats.length)
 			{
