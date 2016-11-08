@@ -14,7 +14,7 @@ class Enemy extends FlxSprite
 	var direction:Bool = true;
 	public function new(?X:Float=0, ?Y:Float=0, ?SimpleGraphic:FlxGraphicAsset) 
 	{
-	super(X, Y, SimpleGraphic);
+		super(X, Y, SimpleGraphic);
 		loadGraphic(AssetPaths.Nigro__png, true, 19, 23);
 		//x = 230; y = 100;
 		acceleration.y = 100;

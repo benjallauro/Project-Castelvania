@@ -17,7 +17,9 @@ class Bat extends FlxSprite
 	public function new(?X:Float=0, Y:Float, ?SimpleGraphic:FlxGraphicAsset) 
 	{
 		super(X, Y, SimpleGraphic);
-		makeGraphic(10, 10, FlxColor.PURPLE);
+		loadGraphic(AssetPaths.Crow__png, true, 12, 9);
+		animation.add("fly", [0, 1, 2, 3], 4, true);
+		animation.play("fly");
 		velocity.x = 0;
 		velocity.y = 50;
 		toptop = y - 15;
