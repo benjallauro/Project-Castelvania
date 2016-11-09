@@ -12,12 +12,15 @@ import flixel.addons.editors.ogmo.FlxOgmoLoader;
 import flixel.tile.FlxTilemap;
 import flixel.FlxObject;
 import flixel.FlxCamera;
+import flixel.util.FlxTimer;
 
 class PlayState extends FlxState
 {
 	var jack:Player;
 	//var testEnemy:Enemy; //Temporal. Esto se quitara cuando se use el Ogmo.
 	//var testBat:Bat;  //Temporal. Esto se quitara cuando se use el Ogmo.
+	//var testRunner:Runner;
+	//var testJumper:Jumper;
 	var theSword:Sword;
 	private var floor:FlxTilemap;
 	private var background:FlxTilemap;
@@ -25,6 +28,7 @@ class PlayState extends FlxState
 	private var camara:FlxSprite;
 	private var enemyKilled:FlxSound;
 	private var backgroundMusic:FlxSound;
+	
 
 	
 	
@@ -37,8 +41,12 @@ class PlayState extends FlxState
 		//testEnemy = new Enemy();
 		//testBat = new Bat(250, 150); //Es necesario asignar X e Y. Aunque solo se enviara Y.
 		//testBat.x = 250;
+		//testRunner = new Runner();
+		//testJumper = new Jumper();
 		Reg.villians = new FlxTypedGroup<Enemy>();
 		Reg.bats = new FlxTypedGroup<Bat>();
+		Reg.runners = new FlxTypedGroup<Runner>();
+		Reg.jumpers = new FlxTypedGroup<Jumper>();
 		loader = new FlxOgmoLoader(AssetPaths.fuckinglevel__oel);
 		floor = loader.loadTilemap(AssetPaths.Tiles__png, 16, 16, "tilesets");
 		floor.immovable = true;
@@ -48,8 +56,12 @@ class PlayState extends FlxState
 		add(jack);
 		//add(testEnemy);
 		//add(testBat);
+		//add(testRunner);
+		//add(testJumper);
 		add(Reg.villians);
 		add(Reg.bats);
+		add(Reg.runners);
+		add(Reg.jumpers);
 		
 		camara = new FlxSprite(FlxG.width / 2, FlxG.height / 2);
 		FlxG.camera.setScrollBounds(0, background.width, 0, background.height);
@@ -68,9 +80,15 @@ class PlayState extends FlxState
 		backgroundMusic.loadEmbedded(AssetPaths.ProjectCastlevaniaTheme__wav);
 		backgroundMusic.volume = 0.1;
 		backgroundMusic.play();
+		var musicLoopTimer:FlxTimer = new FlxTimer();
+		musicLoopTimer.start(99.00, musicLoop, 60);
 
 	}
-	
+	private function musicLoop(Timer:FlxTimer)
+	{
+		backgroundMusic.loadEmbedded(AssetPaths.ProjectCastlevaniaTheme__wav);
+		backgroundMusic.play();
+	}
 	private function entityCreator(entityName:String, entityData:Xml):Void
 	{
 		var entityStartX:Float = Std.parseFloat(entityData.get("x"));
@@ -82,6 +100,10 @@ class PlayState extends FlxState
 				    Reg.villians.add(new Enemy(entityStartX, entityStartY));
 			case "Bat":
 				    Reg.bats.add(new Bat(entityStartX, entityStartY));
+			case "Runner":
+					Reg.runners.add(new Runner(entityStartX, entityStartY));
+			case "Jumper":
+					Reg.jumpers.add(new Jumper(entityStartX, entityStartY));
 		}
 
 	}
@@ -110,6 +132,38 @@ class PlayState extends FlxState
 				if (FlxG.overlap(Reg.bats.members[i], theSword)  && jack.getAttacking() == true)
 					Reg.bats.members[i].damage();
 			}
+			
+			for (i in 0...Reg.runners.length)
+			{
+				if (FlxG.overlap(jack, Reg.runners.members[i]))
+				{
+					jack.damage();
+					Reg.runners.members[i].hit();
+				}
+				if (FlxG.overlap(Reg.runners.members[i], theSword))
+				{
+					Reg.runners.members[i].damage();
+					enemyKilled.play();
+				}
+			}
+			
+			for (i in 0...Reg.jumpers.length)
+			{
+				
+				if (FlxG.overlap(jack, Reg.jumpers.members[i]))
+						{
+							jack.damage();
+							Reg.jumpers.members[i].hit();
+						}
+				if (FlxG.overlap(Reg.jumpers.members[i], theSword))
+					{
+						Reg.jumpers.members[i].damage();
+						enemyKilled.play();
+					}
+			}
+				
+				
+				
 			if (FlxG.keys.justPressed.F || FlxG.keys.justPressed.SHIFT)
 			{
 				if ((jack.getAttacking() == false) && jack.exists)
@@ -172,5 +226,22 @@ class PlayState extends FlxState
 			if (Reg.bats.members[i].x < (Reg.jackXPosition + (FlxG.width/2)))
 				Reg.bats.members[i].velocity.x = -25;
 		}
+		for (i in 0...Reg.runners.length)
+		{
+			FlxG.collide(floor, Reg.runners.members[i]);
+			if (Reg.runners.members[i].isTouching(FlxObject.FLOOR))
+				Reg.runners.members[i].jumpCounter();
+		}
+		for (i in 0...Reg.jumpers.length)
+		{
+			if (Reg.jumpers.members[i].getY() < (FlxG.height - 70))
+			FlxG.collide(floor, Reg.jumpers.members[i]);
+		}	
+		for (i in 0...Reg.jumpers.length)
+		{
+			if (Reg.jumpers.members[i].isTouching(FlxObject.FLOOR))
+				Reg.jumpers.members[i].startRunning();
+		}
+
 	}
 }

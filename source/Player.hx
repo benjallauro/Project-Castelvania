@@ -7,6 +7,7 @@ import flixel.FlxG;
 import flixel.util.FlxTimer;
 import flixel.FlxObject;
 import flixel.system.FlxSound;
+
 class Player extends FlxSprite
 {
 	var life:Int = 3;
@@ -60,6 +61,7 @@ class Player extends FlxSprite
 	{
 		//destroy();
 		Reg.alive = false;
+		hurtSound.play();
 	}
 	public function startAttack()
 	{
@@ -112,6 +114,8 @@ class Player extends FlxSprite
 			velocity.y = -100;
 			jumpSound.play();
 		}
+		if (y > 300)
+		death();
 		
 		super.update(elapsed);
 		

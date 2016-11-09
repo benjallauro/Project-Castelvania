@@ -27,5 +27,7 @@ class Reg
 	static public var jackYPosition:Float = 0;
 	static public var villians:FlxTypedGroup<Enemy>;
     static public var bats:FlxTypedGroup<Bat>;
+	static public var runners:FlxTypedGroup<Runner>;
+	static public var jumpers:FlxTypedGroup<Jumper>;
 	
 }
